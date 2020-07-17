@@ -20,6 +20,7 @@
         "phpunit/phpunit": "~7.5",
         "symfony/console": "*",
         "symfony/messenger": "^4.2 || ^5.0",
+        "twig/twig": "^3.0",
         "weirdan/codeception-psalm-module": "~0.8"
     },
     "autoload": {
@@ -30,6 +31,7 @@
     "autoload-dev": {
         "psr-4": {
             "Psalm\\SymfonyPsalmPlugin\\Tests\\Acceptance\\": ["tests/acceptance/_support"],
+            "Psalm\\SymfonyPsalmPlugin\\Tests\\Codeception\\": ["tests/acceptance/codeception"],
             "Psalm\\SymfonyPsalmPlugin\\Tests\\": ["tests/unit"]
         }
     },
