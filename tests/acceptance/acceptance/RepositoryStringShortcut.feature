@@ -1,3 +1,4 @@
+@symfony-common
 Feature: RepositoryStringShortcut
   In order to follow best practices for Symfony
   As a Psalm user
@@ -7,7 +8,7 @@ Feature: RepositoryStringShortcut
     Given I have the following config
       """
       <?xml version="1.0"?>
-      <psalm totallyTyped="true">
+      <psalm errorLevel="1">
         <projectFiles>
           <directory name="."/>
           <ignoreFiles> <directory name="../../vendor"/> </ignoreFiles>

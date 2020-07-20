@@ -18,17 +18,18 @@ to use InputArgument and InputOption constants as a part of best practise.
 - Fixes `PossiblyInvalidArgument` for `Symfony\Component\HttpFoundation\Request::getContent`.
 The plugin calculates real return type by checking the given argument and marks return type as either string or resource.
 - Detect return type of `Symfony\Component\HttpFoundation\HeaderBag::get` (by checking default value and third argument for < Symfony 4.4)
+- Detect return type of `Symfony\Component\Messenger\Envelope::last` and `Symfony\Component\Messenger\Envelope::all`, based on the provided argument.
 - Taint analysis for Symfony
 - Detects service and parameter [naming convention](https://symfony.com/doc/current/contributing/code/standards.html#naming-conventions) violations
 - Complains when `Container` is injected to a service. Use dependency-injection.
 
 ### Configuration
 
-If you followed installation instructions, psalm-plugin command would added plugin configuration to psalm.xml
+If you follow installation instructions, psalm-plugin command will add plugin configuration to psalm.xml
 
 ```xml
 <?xml version="1.0"?>
-<psalm totallyTyped="true">
+<psalm errorLevel="1">
     <!--  project configuration -->
 
     <plugins>

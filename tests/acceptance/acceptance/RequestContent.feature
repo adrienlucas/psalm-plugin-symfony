@@ -1,3 +1,4 @@
+@symfony-common
 Feature: Request getContent
   Symfony Request has getContent method on which return type changes based on argument
 
@@ -5,7 +6,7 @@ Feature: Request getContent
     Given I have the following config
       """
       <?xml version="1.0"?>
-      <psalm totallyTyped="true">
+      <psalm errorLevel="1">
         <projectFiles>
           <directory name="."/>
           <ignoreFiles> <directory name="../../vendor"/> </ignoreFiles>

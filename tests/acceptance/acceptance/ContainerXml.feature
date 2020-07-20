@@ -1,3 +1,4 @@
+@symfony-common
 Feature: Container XML config
   Detect ContainerInterface::get() result type
 
@@ -5,7 +6,7 @@ Feature: Container XML config
     Given I have the following config
       """
       <?xml version="1.0"?>
-      <psalm totallyTyped="true">
+      <psalm errorLevel="1">
         <projectFiles>
           <directory name="."/>
           <ignoreFiles> <directory name="../../vendor"/> </ignoreFiles>

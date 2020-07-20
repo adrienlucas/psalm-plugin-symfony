@@ -1,10 +1,11 @@
+@symfony-common
 Feature: Header get
 
   Background:
     Given I have the following config
       """
       <?xml version="1.0"?>
-      <psalm totallyTyped="true">
+      <psalm errorLevel="1">
         <projectFiles>
           <directory name="."/>
           <ignoreFiles> <directory name="../../vendor"/> </ignoreFiles>
