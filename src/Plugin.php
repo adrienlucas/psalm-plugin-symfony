@@ -11,7 +11,6 @@ use Psalm\SymfonyPsalmPlugin\Handler\ContainerHandler;
 use Psalm\SymfonyPsalmPlugin\Handler\DoctrineRepositoryHandler;
 use Psalm\SymfonyPsalmPlugin\Handler\HeaderBagHandler;
 use Psalm\SymfonyPsalmPlugin\Symfony\ContainerMeta;
-use Psalm\SymfonyPsalmPlugin\Taint\RequestTaint;
 use SimpleXMLElement;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -70,8 +69,5 @@ class Plugin implements PluginEntryPointInterface
         foreach ($stubs as $stubFilePath) {
             $api->addStubFile($stubFilePath);
         }
-
-        require_once __DIR__.'/Taint/RequestTaint.php';
-        $api->registerHooksFromClass(RequestTaint::class);
     }
 }
