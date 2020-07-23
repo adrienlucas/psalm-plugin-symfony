@@ -20,6 +20,8 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class Plugin implements PluginEntryPointInterface
 {
+    public static $twig_cache_path;
+
     /**
      * @return string[]
      */
@@ -71,7 +73,11 @@ class Plugin implements PluginEntryPointInterface
             $api->addStubFile($stubFilePath);
         }
 
-        require_once __DIR__.'/Taint/TwigTaint.php';
-        $api->registerHooksFromClass(TwigTaint::class);
+        if(isset($config->twigCachePath)) {
+            static::$twig_cache_path = (string) $config->twigCachePath;
+
+            require_once __DIR__.'/Taint/TwigTaint.php';
+            $api->registerHooksFromClass(TwigTaint::class);
+        }
     }
 }
