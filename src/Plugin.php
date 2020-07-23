@@ -3,6 +3,7 @@
 namespace Psalm\SymfonyPsalmPlugin;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Psalm\Exception\ConfigException;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
 use Psalm\SymfonyPsalmPlugin\Handler\ConsoleHandler;
@@ -74,7 +75,11 @@ class Plugin implements PluginEntryPointInterface
         }
 
         if(isset($config->twigCachePath)) {
-            static::$twig_cache_path = (string) $config->twigCachePath;
+            $twig_cache_path = (string) $config->twigCachePath;
+            if(!is_dir($twig_cache_path) || !is_readable($twig_cache_path)) {
+                throw new ConfigException('The twig directory is missing or not readable.');
+            }
+            static::$twig_cache_path = realpath($twig_cache_path);
 
             require_once __DIR__.'/Taint/TwigTaint.php';
             $api->registerHooksFromClass(TwigTaint::class);
