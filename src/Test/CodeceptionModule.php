@@ -17,6 +17,43 @@ use RuntimeException;
  */
 class CodeceptionModule extends BaseModule
 {
+    /** @var array<string,string> */
+    protected $config = [
+        'default_dir' => 'tests/_run/',
+    ];
+
+    /**
+     * @Given I have the following :templateName template :code
+     */
+    public function haveTheFollowingTemplate(string $templateName, string $code): void
+    {
+        $rootDirectory = rtrim($this->config['default_dir'], '/');
+        $templateRootDirectory = $rootDirectory.'/templates';
+        if (!file_exists($templateRootDirectory)) {
+            mkdir($templateRootDirectory);
+        }
+
+        file_put_contents(
+            $templateRootDirectory.'/'.$templateName,
+            $code
+        );
+    }
+
+    /**
+     * @Given the :templateName template is compiled in the :cacheDirectory directory
+     */
+    public function haveTheTemplateCompiled(string $templateName, string $cacheDirectory): void
+    {
+        $rootDirectory = rtrim($this->config['default_dir'], '/');
+        $cacheDirectory = $rootDirectory.'/'.ltrim($cacheDirectory, '/');
+        if (!file_exists($cacheDirectory)) {
+            mkdir($cacheDirectory, 0777, true);
+        }
+
+        $twigEnvironment = TwigBridge::getEnvironment($rootDirectory, $cacheDirectory);
+        $twigEnvironment->load($templateName);
+    }
+
     /**
      * @Given I have the :package package satisfying the :versionConstraint
      */

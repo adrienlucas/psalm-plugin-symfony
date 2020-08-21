@@ -3,6 +3,7 @@
 namespace Psalm\SymfonyPsalmPlugin;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Psalm\Exception\ConfigException;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
 use Psalm\SymfonyPsalmPlugin\Handler\AnnotationHandler;
@@ -12,6 +13,8 @@ use Psalm\SymfonyPsalmPlugin\Handler\ContainerHandler;
 use Psalm\SymfonyPsalmPlugin\Handler\DoctrineRepositoryHandler;
 use Psalm\SymfonyPsalmPlugin\Handler\HeaderBagHandler;
 use Psalm\SymfonyPsalmPlugin\Symfony\ContainerMeta;
+use Psalm\SymfonyPsalmPlugin\Twig\AnalyzedTemplatesTainter;
+use Psalm\SymfonyPsalmPlugin\Twig\CachedTemplatesTainter;
 use SimpleXMLElement;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -20,6 +23,11 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class Plugin implements PluginEntryPointInterface
 {
+    /**
+     * @var string
+     */
+    public static $twig_cache_path;
+
     /**
      * @return string[]
      */
@@ -77,5 +85,18 @@ class Plugin implements PluginEntryPointInterface
         foreach ($stubs as $stubFilePath) {
             $api->addStubFile($stubFilePath);
         }
+
+        if (isset($config->twigCachePath)) {
+            static::$twig_cache_path = getcwd().DIRECTORY_SEPARATOR.ltrim((string) $config->twigCachePath, DIRECTORY_SEPARATOR);
+            if (!is_dir(static::$twig_cache_path) || !is_readable(static::$twig_cache_path)) {
+                throw new ConfigException(sprintf('The twig directory %s is missing or not readable.', static::$twig_cache_path));
+            }
+
+            require_once __DIR__.'/Twig/CachedTemplatesTainter.php';
+            $api->registerHooksFromClass(CachedTemplatesTainter::class);
+        }
+
+        require_once __DIR__.'/Twig/AnalyzedTemplatesTainter.php';
+        $api->registerHooksFromClass(AnalyzedTemplatesTainter::class);
     }
 }
